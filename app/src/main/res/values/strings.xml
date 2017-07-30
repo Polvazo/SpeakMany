@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Bienvenido a ChateaMucho</string>
+    <string name="nombre">SpeakMany</string>
+    <string name="id">Ingresa tu apodo</string>
+    <string name="id_cambio">Cambia tu apodo</string>
+    <string name="cambiarApodo">Cambiar apodo</string>
+    <string name="boton_aceptar">Comienza</string>
+    <string name="mensaje">Usted es nuevo en esto...</string>
+    <string name="buscaChat">Buscar Chat</string>
+    <string name="Cambiar">Cambiar apodo</string>
+</resources>

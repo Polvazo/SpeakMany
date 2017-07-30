@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/PrincipalLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.polvazo.speakmany.speakmanyPrincipal"
+    android:background="@color/colorPrincipal">
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/img_"
+            android:src="@drawable/buscarchat"
+            android:scaleType="centerCrop" />
+
+        <Button
+            android:id="@+id/btn_buscar_chat"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/colorBoton"
+            android:text="@string/buscaChat"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="50dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:layout_gravity="left"
+
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imagen"
+            android:src="@drawable/cambiarnombre"
+            android:scaleType="centerCrop" />
+
+        <Button
+            android:id="@+id/btn_cambiar_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/colorBoton"
+            android:text="@string/cambiarApodo"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="50dp" />
+
+    </RelativeLayout>
+</LinearLayout>

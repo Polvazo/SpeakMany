@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "947608987141",
+    "firebase_url": "https://speakmany-4bea2.firebaseio.com",
+    "project_id": "speakmany-4bea2",
+    "storage_bucket": "speakmany-4bea2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947608987141:android:8ba7bec87674da62",
+        "android_client_info": {
+          "package_name": "com.polvazo.speakmany"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947608987141-qndo842a123po72nq07ts4lor14ugo15.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.polvazo.speakmany",
+            "certificate_hash": "d695d3f00fdf74181410f7516e2953d5e47182ca"
+          }
+        },
+        {
+          "client_id": "947608987141-j7fjv47ssucjmd3ab454iqi0gsgr2ueh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDonE4RprW_T6L4DSvWPo1Jhy_lGXcOvlk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947608987141-j7fjv47ssucjmd3ab454iqi0gsgr2ueh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

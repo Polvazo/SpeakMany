@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 
 public class Preferencias {
 
-    private static final String PREFFERS_NAME = "MisPreferencias";
-    public static final  String USER = null;
+    private static final String PREFFERS_NAME = "usuarioAndroid";
+    public static final  String APODO = null;
 
     public static void Guardar(String clave, String valor, Context context){
 

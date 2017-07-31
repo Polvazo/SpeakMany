@@ -8,4 +8,5 @@
     <color name="blanco">#ffffff</color>
     <color name="colorSecundario">#1A237E</color>
     <color name="colorBoton">#b6000000</color>
+    <color name="colorBarraStyle">#424242</color>
 </resources>

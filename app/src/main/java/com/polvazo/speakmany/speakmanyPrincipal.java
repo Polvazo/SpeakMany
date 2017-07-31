@@ -14,9 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.polvazo.speakmany.firebaseChat.model.mensaje;
 
 public class speakmanyPrincipal extends AppCompatActivity {
 
+    private DatabaseReference mDatabase;
     private Button cambiar;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -26,11 +30,15 @@ public class speakmanyPrincipal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speakmany_principal);
 
+
+
+
         cambiar = (Button)findViewById(R.id.btn_cambiar_usuario);
         cambiar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cambiarusuario();
+                    Cambiarusuario();
+
             }
         });
 
@@ -40,13 +48,14 @@ public class speakmanyPrincipal extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String usuarito = Preferencias.obtener(Preferencias.USER,getApplicationContext());
+        String usuarito = Preferencias.obtener(Preferencias.APODO,getApplicationContext());
         if(usuarito==null){
             RegistrarUsuario();
         }
         else{
+            Snackbar.make(findViewById(R.id.PrincipalLayout),"Bienvenido, "+usuarito,Snackbar.LENGTH_INDEFINITE).show();
 
-            Toast.makeText(this, "Hola,  "+ usuarito, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Hola,  "+ usuarito, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -66,11 +75,19 @@ public class speakmanyPrincipal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String usuario_cache=usuario.getText().toString();
-                Preferencias.Guardar(Preferencias.USER,usuario_cache,getApplicationContext());
+                Preferencias.Guardar(Preferencias.APODO,usuario_cache,getApplicationContext());
                 Intent inten = new Intent(speakmanyPrincipal.this,speakmanyPrincipal.class);
                 startActivity(inten);
+
+                gestionarUser user = new gestionarUser();
+
+                user.crearUSUARIO("id"+Preferencias.obtener(Preferencias.APODO,getApplicationContext()),Preferencias.obtener(Preferencias.APODO,getApplicationContext()));
+
+
+
             }
         });
+
 
     }
     public void Cambiarusuario(){
@@ -81,7 +98,7 @@ public class speakmanyPrincipal extends AppCompatActivity {
         final TextView mostrar = (TextView)vista.findViewById(R.id.txt_usuario);
         final Button aceptar =  (Button)vista.findViewById(R.id.btn_registrar_usuario_cambio);
 
-        String nombreUsuario= Preferencias.obtener(Preferencias.USER,getApplicationContext());
+        String nombreUsuario= Preferencias.obtener(Preferencias.APODO,getApplicationContext());
 
         mBuilder.setView(vista);
         final AlertDialog dialog = mBuilder.create();
@@ -92,12 +109,13 @@ public class speakmanyPrincipal extends AppCompatActivity {
             public void onClick(View v) {
 
                 String usuario_cache=usuario.getText().toString();
-                Preferencias.Guardar(Preferencias.USER,usuario_cache,getApplicationContext());
+                Preferencias.Guardar(Preferencias.APODO,usuario_cache,getApplicationContext());
                 Intent inten = new Intent(speakmanyPrincipal.this,speakmanyPrincipal.class);
                 startActivity(inten);
             }
         });
 
     }
+
 
 }

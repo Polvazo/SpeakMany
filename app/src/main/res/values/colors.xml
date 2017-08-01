@@ -7,6 +7,7 @@
     <color name="negro">#000000</color>
     <color name="blanco">#ffffff</color>
     <color name="colorSecundario">#1A237E</color>
+    <color name="primary_blue">#4A90E2</color>
     <color name="colorBoton">#b6000000</color>
     <color name="colorBarraStyle">#424242</color>
 </resources>

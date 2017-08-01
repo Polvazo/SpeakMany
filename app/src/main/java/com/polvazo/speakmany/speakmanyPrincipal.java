@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.polvazo.speakmany.firebaseChat.model.mensaje;
@@ -22,15 +22,22 @@ public class speakmanyPrincipal extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private Button cambiar;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    private Button buscarChat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speakmany_principal);
 
-
+        buscarChat = (Button)findViewById(R.id.btn_buscar_chat);
+        buscarChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(speakmanyPrincipal.this, chateaMucho.class);
+                startActivity(i);
+            }
+        });
 
 
         cambiar = (Button)findViewById(R.id.btn_cambiar_usuario);

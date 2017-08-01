@@ -21,7 +21,8 @@
         <activity
             android:name=".speakmanyPrincipal"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".chateaMucho"></activity>
     </application>
 
 </manifest>

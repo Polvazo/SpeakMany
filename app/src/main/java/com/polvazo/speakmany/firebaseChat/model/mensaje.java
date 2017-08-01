@@ -11,9 +11,7 @@ public class mensaje {
     private String mUsuario;
     private Date date;
 
-    public mensaje(String mUsuario){
-        this.mUsuario=mUsuario;
-    }
+
 
     public String getmTexto() {
         return mTexto;

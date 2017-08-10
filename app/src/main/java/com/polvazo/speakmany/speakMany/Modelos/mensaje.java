@@ -1,4 +1,4 @@
-package com.polvazo.speakmany.firebaseChat.model;
+package com.polvazo.speakmany.speakMany.Modelos;
 
 import java.util.Date;
 
@@ -9,9 +9,11 @@ import java.util.Date;
 public class mensaje {
     private String mTexto;
     private String mUsuario;
-    private Date date;
 
-
+    public mensaje(String mTexto, String mUsuario) {
+        this.mTexto = mTexto;
+        this.mUsuario = mUsuario;
+    }
 
     public String getmTexto() {
         return mTexto;
@@ -29,11 +31,4 @@ public class mensaje {
         this.mUsuario = mUsuario;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-}
+   }

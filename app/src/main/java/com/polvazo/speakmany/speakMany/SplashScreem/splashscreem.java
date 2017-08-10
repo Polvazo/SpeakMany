@@ -1,4 +1,4 @@
-package com.polvazo.speakmany;
+package com.polvazo.speakmany.speakMany.SplashScreem;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.polvazo.speakmany.R;
+import com.polvazo.speakmany.speakMany.Actividades.chateaMucho;
 
 
 public class splashscreem extends Activity {
@@ -49,7 +52,7 @@ public class splashscreem extends Activity {
                         waited += 100;
                     }
                     Intent intent = new Intent(splashscreem.this,
-                            speakmanyPrincipal.class);
+                            chateaMucho.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     splashscreem.this.finish();

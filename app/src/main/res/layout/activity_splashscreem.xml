@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.polvazo.speakmany.splashscreem"
+    tools:context="com.polvazo.speakmany.speakMany.SplashScreem.splashscreem"
     android:orientation="horizontal"
-    android:background="@color/colorPrincipal"
+    android:background="@color/primary_dark"
     android:id="@+id/lin_lay"
     style="@style/splashTheme"
     >

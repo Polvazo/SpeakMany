@@ -5,7 +5,21 @@ package com.polvazo.speakmany.speakMany.constantes;
  */
 
 public class constantes {
+
+    //PREFERENCIA DEL ID DEL USUARIO PARA PODER CHATEAR
     public static final String IDUSUARIO_CONECTADO = "idusuario";
     public static final String IDUSUARIO_CHATEANDO="idusuarioCHATENADO";
+    public static final String IDCHAT="idChat";
 
+    //ESTADO DEL TIPO DE MENSAJE A RECIBIR
+    public static final int CHAT_END = 1;
+    public static final int CHAT_START = 2;
+
+    //DATOS PARTE DE LA CONEXION A FIREBASE
+    public static final String SALA_CHAT_DISPONIBLE="salaChatDisponible";
+    public static final String SALA_CHAT_OCUPADO="salaChatOcupado";
+    public static final String SALA_CHAT="salaChat";
+    public static final String USUARIOS="usuarios";
+    public static final String USUARIOS_CONECTADOS="usuariosConectados";
+    public static final String BUSCANDO_CHAT="BuscandoChat";
 }

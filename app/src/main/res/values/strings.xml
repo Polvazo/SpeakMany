@@ -13,4 +13,6 @@
 
     <string name="ChateaMucho">ChateaMucho</string>
     <string name="ChateMucho_Sub">Busca tu chat y comienza una nueva aventura con personas divertidas</string>
+
+    <string name="text_item">Message</string>
 </resources>

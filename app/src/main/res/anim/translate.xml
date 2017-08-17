@@ -10,5 +10,4 @@
         android:toYDelta="0%"
         android:duration="3000"
         android:zAdjustment="normal" />
-
 </set>

@@ -1,14 +1,17 @@
 package com.polvazo.speakmany.speakMany.Modelos;
 
-import java.util.Date;
+
 
 /**
  * Created by USUARIO on 31/07/2017.
  */
 
 public class mensaje {
-    private String mTexto;
-    private String mUsuario;
+    public String mTexto;
+    public String mUsuario;
+
+
+    public mensaje (){}
 
     public mensaje(String mTexto, String mUsuario) {
         this.mTexto = mTexto;

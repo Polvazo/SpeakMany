@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.polvazo.speakmany.R;
 import com.polvazo.speakmany.speakMany.Actividades.chateaMucho;
+import com.polvazo.speakmany.speakMany.Util.gestionarUser;
 
 
 public class splashscreem extends Activity {
@@ -28,6 +29,10 @@ public class splashscreem extends Activity {
         setContentView(R.layout.activity_splashscreem);
         StartAnimations();
     }
+
+
+
+
     private void StartAnimations() {
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
         anim.reset();

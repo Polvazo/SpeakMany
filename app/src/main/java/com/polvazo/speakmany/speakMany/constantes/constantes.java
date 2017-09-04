@@ -11,6 +11,11 @@ public class constantes {
     public static final String IDUSUARIO_CHATEANDO="idusuarioCHATENADO";
     public static final String IDCHAT="idChat";
 
+
+    //GUARDAR NUMERO DE SALA
+    public static final String ID_NUMERO_SALA = "idNumeroDeSala";
+
+
     //ESTADO DEL TIPO DE MENSAJE A RECIBIR
     public static final int CHAT_END = 1;
     public static final int CHAT_START = 2;

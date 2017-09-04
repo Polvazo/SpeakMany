@@ -45,7 +45,6 @@ public class buscarUsuario {
                     List<String> usuarios = new ArrayList<String>();
                     String usuarioParaChatear = ids.next().getValue().toString();
                     usuarios.add(usuarioParaChatear);
-                    chat = mDatabase.child(constantes.SALA_CHAT_DISPONIBLE).child(usuarioParaChatear);
                     count ++;
                 }
 

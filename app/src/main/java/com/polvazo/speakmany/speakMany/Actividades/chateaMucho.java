@@ -44,6 +44,7 @@ public class chateaMucho extends AppCompatActivity {
     private mensajeAdapter mAdapter;
     private String mId;
     FirebaseDatabase database;
+    private String SalazaPapu;
 
     @SuppressLint("HardwareIds")
     @Override
@@ -51,26 +52,83 @@ public class chateaMucho extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatea_mucho);
 
-
-
-
-
-
         metText = (EditText) findViewById(R.id.message);
         mbtSent = (Button) findViewById(R.id.btn_send);
         mRecyclerView = (RecyclerView) findViewById(R.id.rvChat);
         mChats = new ArrayList<>();
 
 
-        mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new mensajeAdapter(mChats, mId);
         mRecyclerView.setAdapter(mAdapter);
+        database = FirebaseDatabase.getInstance();
 
-        BuscarChat();
+
+
+
+        SalazaPapu = preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this);
+
+        mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(SalazaPapu).child("mensajes");
+
+        mbtSent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = metText.getText().toString();
+
+                if (!message.isEmpty()) {
+
+                    mFirebaseRef.push().setValue(new mensaje(message, mId));
+                }
+
+                metText.setText("");
+            }
+        });
+
+
+        mFirebaseRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+                    try {
+
+                        mensaje model = dataSnapshot.getValue(mensaje.class);
+
+                        mChats.add(model);
+                        mRecyclerView.scrollToPosition(mChats.size() - 1);
+                        mAdapter.notifyItemInserted(mChats.size() - 1);
+                    } catch (Exception ex) {
+                        Log.e(TAG, ex.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, databaseError.getMessage());
+            }
+        });
+
+
 
 
     }
+
 
 
     @SuppressLint("HardwareIds")
@@ -81,6 +139,11 @@ public class chateaMucho extends AppCompatActivity {
         mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         preferencia.Guardar(constantes.IDUSUARIO_CONECTADO,mId,getApplicationContext());
         gestionarUser.crearUsuarioConectado(getApplicationContext());
+
+        BuscarChat();
+
+
+
 
     }
 
@@ -99,66 +162,10 @@ public class chateaMucho extends AppCompatActivity {
 
                 dialog.dismiss();
 
-                database = FirebaseDatabase.getInstance();
-                String numeroSalita =gestionarSalaChat.buscarNumerodeChat(getApplicationContext());
+                gestionarSalaChat.buscarNumerodeChat(chateaMucho.this);
 
 
-                mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(numeroSalita).child(constantes.SALA_CHAT);
 
-                mbtSent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String message = metText.getText().toString();
-
-                        if (!message.isEmpty()) {
-
-                            mFirebaseRef.push().setValue(new mensaje(message, mId));
-                        }
-
-                        metText.setText("");
-                    }
-                });
-
-
-                mFirebaseRef.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        if (dataSnapshot != null && dataSnapshot.getValue() != null) {
-                            try {
-
-                                mensaje model = dataSnapshot.getValue(mensaje.class);
-
-                                mChats.add(model);
-                                mRecyclerView.scrollToPosition(mChats.size() - 1);
-                                mAdapter.notifyItemInserted(mChats.size() - 1);
-                            } catch (Exception ex) {
-                                Log.e(TAG, ex.getMessage());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.d(TAG, databaseError.getMessage());
-                    }
-                });
-
-                //gestionarSalaChat.crearChat(getApplicationContext());
 
 
             }

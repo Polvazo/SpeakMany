@@ -23,4 +23,5 @@ public class preferencia {
         return valor;
 
     }
+
 }

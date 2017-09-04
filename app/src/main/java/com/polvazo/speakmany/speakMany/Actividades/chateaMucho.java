@@ -57,6 +57,17 @@ public class chateaMucho extends AppCompatActivity {
         gestionarUser.crearUsuarioConectado(getApplicationContext());
         BuscarChat();
 
+
+
+
+    }
+
+    @SuppressLint("HardwareIds")
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
         metText = (EditText) findViewById(R.id.message);
         mbtSent = (Button) findViewById(R.id.btn_send);
         mRecyclerView = (RecyclerView) findViewById(R.id.rvChat);
@@ -68,17 +79,6 @@ public class chateaMucho extends AppCompatActivity {
         mAdapter = new mensajeAdapter(mChats, mId);
         mRecyclerView.setAdapter(mAdapter);
         database = FirebaseDatabase.getInstance();
-
-
-    }
-
-    @SuppressLint("HardwareIds")
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-
 
         mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this)).child("mensajes");
         Log.e("sla",preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this));

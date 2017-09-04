@@ -90,7 +90,7 @@ public  class gestionarSalaChat {
 
                     }
                     else {
-                        String id= preferencia.obtener(constantes.IDUSUARIO_CONECTADO, context);
+                        String id = preferencia.obtener(constantes.IDUSUARIO_CONECTADO, context);
                         Random rand = new Random();
                         String Salita = salaDisponible.get(rand.nextInt(salaDisponible.size()));
                         Log.e("Sala Random", Salita);
@@ -113,8 +113,9 @@ public  class gestionarSalaChat {
                         preferencia.Guardar(constantes.ID_NUMERO_SALA,Salita,context);
                         Log.e("sala",preferencia.obtener(constantes.ID_NUMERO_SALA,context));
                         //se crea la sala de disponibilidad ocupada
+
                         mDatabase.child(constantes.SALA_CHAT_OCUPADO).child(Salita).child(constantes.USUARIOS).push().setValue(id);
-                        //mDatabase.child(constantes.SALA_CHAT_OCUPADO).push().setValue(Salita);
+
 
                         progressDialog.dismiss();
                     }

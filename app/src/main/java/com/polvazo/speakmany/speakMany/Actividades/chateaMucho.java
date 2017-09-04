@@ -52,6 +52,11 @@ public class chateaMucho extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatea_mucho);
 
+        mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        preferencia.Guardar(constantes.IDUSUARIO_CONECTADO,mId,getApplicationContext());
+        gestionarUser.crearUsuarioConectado(getApplicationContext());
+        BuscarChat();
+
         metText = (EditText) findViewById(R.id.message);
         mbtSent = (Button) findViewById(R.id.btn_send);
         mRecyclerView = (RecyclerView) findViewById(R.id.rvChat);
@@ -65,12 +70,18 @@ public class chateaMucho extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
 
+    }
+
+    @SuppressLint("HardwareIds")
+    @Override
+    protected void onStart() {
+        super.onStart();
 
 
-        SalazaPapu = preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this);
 
-        mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(SalazaPapu).child("mensajes");
 
+        mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this)).child("mensajes");
+        Log.e("sla",preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this));
         mbtSent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,26 +136,6 @@ public class chateaMucho extends AppCompatActivity {
         });
 
 
-
-
-    }
-
-
-
-    @SuppressLint("HardwareIds")
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        preferencia.Guardar(constantes.IDUSUARIO_CONECTADO,mId,getApplicationContext());
-        gestionarUser.crearUsuarioConectado(getApplicationContext());
-
-        BuscarChat();
-
-
-
-
     }
 
 
@@ -168,8 +159,8 @@ public class chateaMucho extends AppCompatActivity {
 
 
 
-            }
-        });
+    }
+});
         dialog.cancel();
         dialog.show();
 
@@ -177,4 +168,9 @@ public class chateaMucho extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        preferencia.Elminar(getApplicationContext());
+    }
 }

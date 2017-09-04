@@ -23,5 +23,11 @@ public class preferencia {
         return valor;
 
     }
+    public static void Elminar (Context context){
+
+        SharedPreferences prefs = context.getSharedPreferences(PREFFERS_NAME, Context.MODE_PRIVATE);
+         prefs.edit().clear().commit();
+
+    }
 
 }

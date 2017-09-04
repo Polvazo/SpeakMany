@@ -94,7 +94,6 @@ public  class gestionarSalaChat {
                         Random rand = new Random();
                         String Salita = salaDisponible.get(rand.nextInt(salaDisponible.size()));
                         Log.e("Sala Random", Salita);
-                        Toast.makeText(context, "Se encontró un usuario conectado", Toast.LENGTH_SHORT).show();
 
                         //Buscar el key de la sala para poder eliminarlo
                         int position = -1;
@@ -116,7 +115,7 @@ public  class gestionarSalaChat {
 
                         mDatabase.child(constantes.SALA_CHAT_OCUPADO).child(Salita).child(constantes.USUARIOS).push().setValue(id);
 
-
+                        Toast.makeText(context, "Se encontró un usuario conectado", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
 

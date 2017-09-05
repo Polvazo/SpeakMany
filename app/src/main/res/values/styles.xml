@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/negro</item>
         <item name="colorPrimaryDark">@color/negro</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 
     <style name="splashTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -20,8 +21,8 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
 
+    </style>
 
 
 </resources>

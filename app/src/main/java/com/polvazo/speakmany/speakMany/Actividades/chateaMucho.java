@@ -4,6 +4,7 @@ package com.polvazo.speakmany.speakMany.Actividades;
 
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.Settings;
@@ -13,6 +14,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +58,7 @@ public class chateaMucho extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatea_mucho);
+
 
         mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         preferencia.Guardar(constantes.IDUSUARIO_CONECTADO,mId,getApplicationContext());
@@ -189,8 +193,22 @@ public class chateaMucho extends AppCompatActivity {
         });
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        switch (item.getItemId()){
+            case R.id.buscar_otra_vez:
+                BuscarChat();
+            default:
+                return super.onOptionsItemSelected(item);
 
+        }
 
+    }
 }

@@ -111,13 +111,6 @@ public class chateaMucho extends AppCompatActivity {
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        preferencia.Elminar(getApplicationContext());
-        database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA,chateaMucho.this)).removeValue();
-    }
-
-    @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setTitle("CHATEAMUCHO")

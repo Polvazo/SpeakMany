@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.polvazo.speakmany.speakMany.Actividades.chateaMucho">
+    tools:context="com.polvazo.speakmany.speakMany.Actividades.chateaMucho"
+    android:background="@color/colorFondoChat">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvChat"
@@ -14,7 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/relativeLayout"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:background="@color/colorFondoChat"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,21 +24,25 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@android:color/white"
+        android:background="@color/colorBoton"
         android:padding="5dp"
         android:id="@+id/relativeLayout"
         android:layout_alignParentLeft="true">
 
+
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:id="@+id/message"
+        android:background="@drawable/fondoedidtext"
         android:hint="@string/send"
-        android:layout_centerVertical="true"
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginRight="10dp"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/btn_send"
         android:layout_alignParentLeft="true"
-         />
+        android:layout_alignParentTop="true" />
+
 
     <Button
         android:id="@+id/btn_send"
@@ -44,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:background="@color/colorPrincipal"
+        android:background="@drawable/fondoboton"
         android:text="@string/enviar"
         android:textSize="16sp"
         android:textColor="@color/blanco"

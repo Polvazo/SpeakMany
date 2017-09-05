@@ -151,7 +151,7 @@ public  class gestionarSalaChat {
         final ProgressDialog progressDialog2;
         progressDialog2 = new ProgressDialog(casa);
         progressDialog2.setTitle("Esperando Usuario");
-        progressDialog2.setMessage("Esperando Usuario que se conecte... ");
+        progressDialog2.setMessage("Esperando un usuario que se conecte a la sala... :)");
         progressDialog2.setCancelable(false);
         progressDialog2.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
             @Override
@@ -178,7 +178,7 @@ public  class gestionarSalaChat {
                         if (evenet != null) {
                             esperandoCHat.removeEventListener(evenet);
                         }
-                        Toast.makeText(casa, "Se encontro usuario", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(casa, "Se encontro usuario, puede comenzar a chatear", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

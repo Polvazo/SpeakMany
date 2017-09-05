@@ -15,6 +15,8 @@ public class constantes {
     //GUARDAR NUMERO DE SALA
     public static final String ID_NUMERO_SALA = "idNumeroDeSala";
 
+    //GUARDAR KEY DE LA SALA
+    public static final String ID_KEY_NUMERO_SALA = "idKeySala";
 
     //ESTADO DEL TIPO DE MENSAJE A RECIBIR
     public static final int CHAT_END = 1;
@@ -25,6 +27,6 @@ public class constantes {
     public static final String SALA_CHAT_OCUPADO="salaChatOcupado";
     public static final String SALA_CHAT="salaChat";
     public static final String USUARIOS="usuarios";
-    public static final String USUARIOS_CONECTADOS="usuariosConectados";
+    public static final String USUARIOS_CONECTADOS="usuariosTotal";
     public static final String BUSCANDO_CHAT="BuscandoChat";
 }

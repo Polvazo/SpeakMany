@@ -15,7 +15,7 @@ public class deleteChat{
 
                 databaseReference.child(constantes.SALA_CHAT_DISPONIBLE).child(roomDelete).removeValue();
 
-    }
+}
     public static void eliminarDisponibilidadSalaOcupada(DatabaseReference databaseReference, String roomDelete){
 
         databaseReference.child(constantes.SALA_CHAT_OCUPADO).child(roomDelete).removeValue();

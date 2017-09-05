@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.polvazo.speakmany.R;
 import com.polvazo.speakmany.speakMany.Modelos.mensaje;
 import com.polvazo.speakmany.speakMany.Util.comprobarInternet;
+import com.polvazo.speakmany.speakMany.Util.deleteChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarSalaChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarUser;
 
@@ -113,8 +114,7 @@ public class chateaMucho extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         preferencia.Elminar(getApplicationContext());
-        database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this)).removeValue();
-
+        database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA,chateaMucho.this)).removeValue();
     }
 
     @Override
@@ -212,11 +212,36 @@ public class chateaMucho extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.buscar_otra_vez:
+                EliminarSala();
                 BuscarChat();
             default:
                 return super.onOptionsItemSelected(item);
 
         }
 
+    }
+    public void EliminarSala(){
+        DatabaseReference mdatabase;
+        mdatabase=FirebaseDatabase.getInstance().getReference();
+        String Sala = preferencia.obtener(constantes.ID_NUMERO_SALA,chateaMucho.this);
+        deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase,Sala);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        DatabaseReference mdatabase1;
+        mdatabase1=FirebaseDatabase.getInstance().getReference();
+        String sala1=preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this);
+        String Sala = preferencia.obtener(constantes.ID_KEY_NUMERO_SALA,chateaMucho.this);
+        deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase1,sala1);
+        deleteChat.eliminarDisponibilidadSala(mdatabase1,Sala);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Toast.makeText(chateaMucho.this, "Se canceló la busqueda", Toast.LENGTH_SHORT).show();
+        BuscarChat();
     }
 }

@@ -93,9 +93,11 @@ public  class gestionarSalaChat {
                             //GUARDO EL NUMERO DE SALA
                             preferencia.Guardar(constantes.ID_NUMERO_SALA, numerodeSala, context);
 
+                            preferencia.Guardar(constantes.ID_KEY_NUMERO_SALA,keySalita,context);
+
                             progressDialog.dismiss();
 
-                            Toast.makeText(context, "Se creo una nueva sala", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "No se encontró usuario y se creo una nueva sala", Toast.LENGTH_SHORT).show();
 
                             EsperarsUsuario(numerodeSala, context, keySalita,numerodeSala);
                             chateaMucho.nextChat();
@@ -104,20 +106,22 @@ public  class gestionarSalaChat {
                     } else {
                         String id = preferencia.obtener(constantes.IDUSUARIO_CONECTADO, context);
                         Random rand = new Random();
-                        String Salita = salaDisponible.get(rand.nextInt(salaDisponible.size()));
+                        int indiceSala = rand.nextInt(salaDisponible.size());
+                        String Salita = salaDisponible.get(indiceSala);
                         Log.e("Sala Random", Salita);
 
+                        /*
                         //Buscar el key de la sala para poder eliminarlo
                         int position = -1;
                         for (int i = 0; i < salaDisponible.size(); i++) {
                             if (salaDisponible.get(i).equals(Salita))
                                 position = i;
-                        }
+                        }*/
 
                         ///////////////////////////////
-                        String keySala = salaDisponibleKey.get(position);
+                        String keySala = salaDisponibleKey.get(indiceSala);
                         //se elimina la disponibilidad de la sala
-
+                        preferencia.Guardar(constantes.ID_KEY_NUMERO_SALA,keySala,context);
                         mDatabase.child(constantes.SALA_CHAT_DISPONIBLE).child(keySala).removeValue();
                         //mDatabase.child(constantes.SALA_CHAT_OCUPADO).push().setValue(Salita);
 
@@ -160,8 +164,8 @@ public  class gestionarSalaChat {
 
                 deleteChat.eliminarDisponibilidadSala(mDatabase,roomDelete);
                 deleteChat.eliminarDisponibilidadSalaOcupada(mDatabase,room2);
-                progressDialog2.dismiss();
                 chateaMucho.BuscarChat();
+                progressDialog2.dismiss();
 
             }
         });
@@ -192,6 +196,7 @@ public  class gestionarSalaChat {
         });
 
     }
+
 
  }
 

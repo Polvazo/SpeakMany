@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.polvazo.speakmany.R;
 import com.polvazo.speakmany.speakMany.Modelos.mensaje;
+import com.polvazo.speakmany.speakMany.Util.comprobarInternet;
 import com.polvazo.speakmany.speakMany.Util.gestionarSalaChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarUser;
 
@@ -73,10 +75,20 @@ public class chateaMucho extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                dialog.dismiss();
+                if(!comprobarInternet.verificaConexion(chateaMucho.this)){
+                    Toast.makeText(getBaseContext(),"Comprueba tu conexión a Internet", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    BuscarChat();
+                }
+                else{
 
-                gestionarSalaChat chat = new gestionarSalaChat(chateaMucho.this);
-                chat.buscarNumerodeChat(chateaMucho.this);
+                    dialog.dismiss();
+                    gestionarSalaChat chat = new gestionarSalaChat(chateaMucho.this);
+                    chat.buscarNumerodeChat(chateaMucho.this);
+                }
+
+
+
             }
         });
         dialog.cancel();

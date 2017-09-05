@@ -16,4 +16,7 @@
 
     <string name="text_item">Message</string>
     <string name="mensaje_buscar">Buscnado Sala...</string>
+
+    <string name="Salir">Salir</string>
+    <string name="MensajeDialogoSalir">¿Está seguro que desea salir y cerrar la aplicación?</string>
 </resources>

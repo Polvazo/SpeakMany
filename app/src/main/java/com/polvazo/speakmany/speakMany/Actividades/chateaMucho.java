@@ -4,6 +4,8 @@ package com.polvazo.speakmany.speakMany.Actividades;
 
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -57,16 +59,53 @@ public class chateaMucho extends AppCompatActivity {
         gestionarUser.crearUsuarioConectado(getApplicationContext());
         BuscarChat();
 
-
-
-
     }
 
-    @SuppressLint("HardwareIds")
-    @Override
-    protected void onStart() {
-        super.onStart();
+    public void BuscarChat(){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(chateaMucho.this);
+        View mView = getLayoutInflater().inflate(R.layout.dialogo_buscar_chat, null);
 
+        final Button aceptar =  (Button)mView.findViewById(R.id.btn_chat);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.setCancelable(false);
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+
+                gestionarSalaChat chat = new gestionarSalaChat(chateaMucho.this);
+                chat.buscarNumerodeChat(chateaMucho.this);
+            }
+        });
+        dialog.cancel();
+        dialog.show();
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        preferencia.Elminar(getApplicationContext());
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("CHATEAMUCHO")
+                .setMessage("¿Está seguro que desea salir?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        chateaMucho.super.onBackPressed();
+                    }
+                }).create().show();
+    }
+
+    public void nextChat(){
 
         metText = (EditText) findViewById(R.id.message);
         mbtSent = (Button) findViewById(R.id.btn_send);
@@ -135,42 +174,7 @@ public class chateaMucho extends AppCompatActivity {
             }
         });
 
-
     }
 
 
-    public void BuscarChat(){
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(chateaMucho.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialogo_buscar_chat, null);
-
-        final Button aceptar =  (Button)mView.findViewById(R.id.btn_chat);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.setCancelable(false);
-        aceptar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialog.dismiss();
-
-                gestionarSalaChat.buscarNumerodeChat(chateaMucho.this);
-
-
-
-
-
-    }
-});
-        dialog.cancel();
-        dialog.show();
-
-
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        preferencia.Elminar(getApplicationContext());
-    }
 }

@@ -83,21 +83,22 @@ public  class gestionarSalaChat {
 
                     if (salaDisponible.isEmpty()) {
 
-                        numerodeSala = preferencia.obtener(constantes.IDUSUARIO_CONECTADO, context);
-                        mDatabase.child(constantes.SALA_CHAT_DISPONIBLE).push().setValue(numerodeSala);
-                        mDatabase.child(constantes.SALA_CHAT_OCUPADO).child(numerodeSala).child(constantes.USUARIOS).push().setValue(numerodeSala);
+                            numerodeSala = preferencia.obtener(constantes.IDUSUARIO_CONECTADO, context);
 
-                        //GUARDO EL NUMERO DE SALA
-                        preferencia.Guardar(constantes.ID_NUMERO_SALA, numerodeSala, context);
+                            DatabaseReference GETkEY= mDatabase.child(constantes.SALA_CHAT_DISPONIBLE).push();
+                            String keySalita = GETkEY.getKey();
+                            GETkEY.setValue(numerodeSala);
+                            mDatabase.child(constantes.SALA_CHAT_OCUPADO).child(numerodeSala).child(constantes.USUARIOS).push().setValue(numerodeSala);
 
-                        progressDialog.dismiss();
+                            //GUARDO EL NUMERO DE SALA
+                            preferencia.Guardar(constantes.ID_NUMERO_SALA, numerodeSala, context);
 
-                        Toast.makeText(context, "Se creo una nueva sala", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
 
-                        EsperarsUsuario(numerodeSala, context);
+                            Toast.makeText(context, "Se creo una nueva sala", Toast.LENGTH_SHORT).show();
 
-
-                        chateaMucho.nextChat();
+                            EsperarsUsuario(numerodeSala, context, keySalita,numerodeSala);
+                            chateaMucho.nextChat();
 
 
                     } else {
@@ -145,7 +146,7 @@ public  class gestionarSalaChat {
 
     }
 
-    public void EsperarsUsuario(final String room, final Context casa) {
+    public void EsperarsUsuario(final String room, final Context casa, final String roomDelete, final String room2) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         esperandoCHat = mDatabase.child(constantes.SALA_CHAT_OCUPADO).child(room).child(constantes.USUARIOS);
         final ProgressDialog progressDialog2;
@@ -157,7 +158,8 @@ public  class gestionarSalaChat {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                mDatabase.child(constantes.SALA_CHAT_DISPONIBLE).child(room).removeValue();
+                deleteChat.eliminarDisponibilidadSala(mDatabase,roomDelete);
+                deleteChat.eliminarDisponibilidadSalaOcupada(mDatabase,room2);
                 progressDialog2.dismiss();
                 chateaMucho.BuscarChat();
 

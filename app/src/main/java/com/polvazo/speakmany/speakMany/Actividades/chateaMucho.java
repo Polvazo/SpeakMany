@@ -72,6 +72,7 @@ public class chateaMucho extends AppCompatActivity {
         View mView = getLayoutInflater().inflate(R.layout.dialogo_buscar_chat, null);
 
         final Button aceptar =  (Button)mView.findViewById(R.id.btn_chat);
+        final Button salir =  (Button)mView.findViewById(R.id.btn_chat_cancelar);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.setCancelable(false);
@@ -95,6 +96,13 @@ public class chateaMucho extends AppCompatActivity {
 
             }
         });
+        salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         dialog.cancel();
         dialog.show();
     }

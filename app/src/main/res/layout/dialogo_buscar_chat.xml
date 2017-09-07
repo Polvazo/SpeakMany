@@ -11,10 +11,9 @@
     <ImageView
         android:id="@+id/img_dialogoChat"
         android:layout_width="wrap_content"
-        android:layout_height="103dp"
+        android:layout_height="211dp"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/buscarchat"
-        android:layout_weight="0.40" />
+        app:srcCompat="@drawable/buscarchat" />
 
     <TextView
         android:id="@+id/txt_1"

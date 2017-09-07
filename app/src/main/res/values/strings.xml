@@ -8,7 +8,7 @@
     <string name="mensaje">Usted es nuevo en esto...</string>
     <string name="buscaChat">Buscar Chat</string>
     <string name="Cambiar">Cambiar apodo</string>
-    <string name="send">   Escribe tu mensaje...</string>
+    <string name="send">   Escribe un mensaje</string>
     <string name="enviar">Enviar</string>
     <string name="cancelar">Salir</string>
 
@@ -16,8 +16,9 @@
     <string name="ChateMucho_Sub">Busca tu chat y comienza una nueva aventura con personas divertidas</string>
 
     <string name="text_item">Message</string>
-    <string name="mensaje_buscar">Buscnado Sala...</string>
+    <string name="bienbenido">Bienvenido a ChateaMucho</string>
+    <string name="mensaje_buscar">Buscando Sala...</string>
 
-    <string name="Salir">Salir</string>
+    <string name="Salir">Salir</string>}
     <string name="MensajeDialogoSalir">¿Está seguro que desea salir y cerrar la aplicación?</string>
 </resources>

@@ -5,20 +5,24 @@ package com.polvazo.speakmany.speakMany.Actividades;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Scroller;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -28,7 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.polvazo.speakmany.R;
 import com.polvazo.speakmany.speakMany.Modelos.mensaje;
-import com.polvazo.speakmany.speakMany.Util.comprobarInternet;
+import com.polvazo.speakmany.speakMany.Service.VerificarInternet;
 import com.polvazo.speakmany.speakMany.Util.deleteChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarSalaChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarUser;
@@ -52,7 +56,7 @@ public class chateaMucho extends AppCompatActivity {
     private mensajeAdapter mAdapter;
     private String mId;
     FirebaseDatabase database;
-    private String SalazaPapu;
+    ProgressDialog progressDialog;
 
     @SuppressLint("HardwareIds")
     @Override
@@ -81,7 +85,29 @@ public class chateaMucho extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(!comprobarInternet.verificaConexion(chateaMucho.this)){
+
+
+
+                VerificarInternet tarea =
+                        new VerificarInternet(chateaMucho.this, new VerificarInternet.EntoncesHacer() {
+                            @Override
+                            public void cuandoHayInternet() {
+                                // abrimos la nueva ventana.. este es el ELSE de tu if
+                                dialog.dismiss();
+                                gestionarSalaChat chat = new gestionarSalaChat(chateaMucho.this);
+                                chat.buscarNumerodeChat(chateaMucho.this);
+                            }
+
+                            @Override
+                            public void cuandoNOHayInternet() {
+                                Toast.makeText(getBaseContext(),"Lo sentimos, compruebe su conexión a Internet", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                BuscarChat();
+                            }
+                        });
+                tarea.execute();
+
+                /*if(!comprobarInternet.isOnline(chateaMucho.this)){
                     Toast.makeText(getBaseContext(),"Comprueba tu conexión a Internet", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     BuscarChat();
@@ -91,7 +117,7 @@ public class chateaMucho extends AppCompatActivity {
                     dialog.dismiss();
                     gestionarSalaChat chat = new gestionarSalaChat(chateaMucho.this);
                     chat.buscarNumerodeChat(chateaMucho.this);
-                }
+                }*/
 
 
 
@@ -133,13 +159,23 @@ public class chateaMucho extends AppCompatActivity {
 
 
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setStackFromEnd(true);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        //  mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new mensajeAdapter(mChats, mId);
+
         mRecyclerView.setAdapter(mAdapter);
         database = FirebaseDatabase.getInstance();
 
         mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this)).child("mensajes");
         Log.e("sla",preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this));
+        metText.setEnabled(true);
+
+
+
         mbtSent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,6 +216,13 @@ public class chateaMucho extends AppCompatActivity {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
+                if(mId.equals(mId)){Snackbar snackbar = Snackbar.make(findViewById(R.id.chat),"El usuario se desconecto", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                    //Toast.makeText(chateaMucho.this, "El usuario se desconecto, busque otro usuario", Toast.LENGTH_SHORT).show();
+                    metText.setEnabled(false);
+                    metText.setHint("Escribir un mensaje");}
+                //en caso de salir de una conversacion, enviar un mensaje
+
             }
 
             @Override
@@ -205,8 +248,25 @@ public class chateaMucho extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.buscar_otra_vez:
-                EliminarSala();
-                BuscarChat();
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(chateaMucho.this);
+                builder.setTitle("Nuevo Chat");
+                builder.setMessage("¿Desea buscar nuevo mensaje?");
+                builder.setPositiveButton("BUSCAR", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        EliminarSala();
+                        BuscarChat();
+                    } });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        finish();
+                    } });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -221,20 +281,25 @@ public class chateaMucho extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         DatabaseReference mdatabase1;
         mdatabase1=FirebaseDatabase.getInstance().getReference();
         String sala1=preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this);
         String Sala = preferencia.obtener(constantes.ID_KEY_NUMERO_SALA,chateaMucho.this);
-        deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase1,sala1);
-        deleteChat.eliminarDisponibilidadSala(mdatabase1,Sala);
-    }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Toast.makeText(chateaMucho.this, "Se canceló la busqueda", Toast.LENGTH_SHORT).show();
-        BuscarChat();
+        if (sala1!=null){
+            deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase1,sala1);
+        }else{}
+        if (Sala!=null){
+            deleteChat.eliminarDisponibilidadSala(mdatabase1,Sala);
+        }else{}
+
+
     }
 }

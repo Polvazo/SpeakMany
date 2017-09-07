@@ -251,7 +251,7 @@ public class chateaMucho extends AppCompatActivity {
             case R.id.buscar_otra_vez:
 
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(chateaMucho.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(chateaMucho.this);
                 builder.setTitle("Nuevo Chat");
                 builder.setMessage("¿Desea buscar nuevo mensaje?");
                 builder.setPositiveButton("BUSCAR", new DialogInterface.OnClickListener() {
@@ -262,7 +262,8 @@ public class chateaMucho extends AppCompatActivity {
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        finish();
+                        dialog.dismiss();
+
                     } });
                 AlertDialog dialog = builder.create();
                 dialog.show();

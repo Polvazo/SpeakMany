@@ -179,13 +179,12 @@ public class chateaMucho extends AppCompatActivity {
         mbtSent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = metText.getText().toString();
+                String message = metText.getText().toString().trim();
 
-                if (!message.isEmpty()) {
+                if (message.length()!=0) {
 
                     mFirebaseRef.push().setValue(new mensaje(message, mId));
                 }
-
                 metText.setText("");
             }
         });
@@ -216,7 +215,7 @@ public class chateaMucho extends AppCompatActivity {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                if(mId.equals(preferencia.obtener(constantes.IDUSUARIO_CONECTADO,getApplicationContext()))){
+                if(!mId.equals(preferencia.obtener(constantes.IDUSUARIO_CONECTADO,getApplicationContext()))){
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.chat),"El usuario se desconecto", Snackbar.LENGTH_SHORT);
                     snackbar.show();
                     //Toast.makeText(chateaMucho.this, "El usuario se desconecto, busque otro usuario", Toast.LENGTH_SHORT).show();

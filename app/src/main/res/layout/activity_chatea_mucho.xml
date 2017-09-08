@@ -27,50 +27,44 @@
         android:layout_alignParentStart="true"
         android:background="@color/colorFondoChat"
         android:padding="5dp"
-        android:weightSum="1"
         android:id="@+id/relativeLayout"
         android:layout_alignParentLeft="true">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:id="@+id/message"
-        android:background="@drawable/fondoedidtext"
-        android:hint="@string/send"
-        android:layout_marginLeft="2.5dp"
-        android:layout_marginRight="10dp"
-        android:paddingLeft="8dp"
-        android:inputType="textCapSentences|textMultiLine"
-        android:maxLength="2000"
-        android:layout_weight="1"
-        android:maxLines="4"
-        android:scrollbars="vertical"
-        android:isScrollContainer="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="5dp"
-        android:layout_toStartOf="@+id/btn_send"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/message"
+            android:background="@drawable/fondoedidtext"
+            android:hint="@string/send"
+            android:layout_marginLeft="2.5dp"
+            android:layout_marginRight="10dp"
+            android:padding="12.7dp"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="4"
+            android:scrollbars="vertical"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/btn_send"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/btn_send" />
 
 
 
-    <Button
-        android:id="@+id/btn_send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/fondoboton"
-        android:text="@string/enviar"
-        android:textSize="16sp"
-        android:textColor="@color/blanco"
-        />
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/fondoboton"
+            android:text="@string/enviar"
+            android:textSize="16sp"
+            android:layout_alignBottom="@+id/message"
+            android:textColor="@color/blanco"
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 </RelativeLayout>
-
-
-
 
 
 

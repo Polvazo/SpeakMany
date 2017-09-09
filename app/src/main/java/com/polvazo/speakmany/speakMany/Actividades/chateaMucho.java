@@ -59,11 +59,8 @@ public class chateaMucho extends AppCompatActivity {
     private String mId;
     FirebaseDatabase database;
     ProgressDialog progressDialog;
+    private int estado;
     private AlertDialog dialog1;
-    private AlertDialog dialog;
-
-
-
 
     @SuppressLint("HardwareIds")
     @Override
@@ -82,7 +79,8 @@ public class chateaMucho extends AppCompatActivity {
         builder.setMessage("¿Desea buscar nuevo mensaje?");
         builder.setPositiveButton("BUSCAR", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
+                estado=1;
+                Log.e("estado", String.valueOf(estado));
                 EliminarSala();
                 BuscarChat();
             } });
@@ -103,7 +101,7 @@ public class chateaMucho extends AppCompatActivity {
         final Button aceptar =  (Button)mView.findViewById(R.id.btn_chat);
         final Button salir =  (Button)mView.findViewById(R.id.btn_chat_cancelar);
         mBuilder.setView(mView);
-        dialog = mBuilder.create();
+        final AlertDialog dialog = mBuilder.create();
         dialog.setCancelable(false);
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +223,7 @@ public class chateaMucho extends AppCompatActivity {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                if(!dialog.isShowing()){
+                if(estado!=1){
 
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.chat),"El usuario se desconecto", Snackbar.LENGTH_SHORT);
                     snackbar.show();
@@ -233,7 +231,8 @@ public class chateaMucho extends AppCompatActivity {
                     metText.setEnabled(false);
                     metText.setHint("Usuario Desconectado");
                 }
-
+                    estado=0;
+                Log.e("estado", String.valueOf(estado));
 
                     //en caso de salir de una conversacion, enviar un mensaje
 
@@ -269,6 +268,7 @@ public class chateaMucho extends AppCompatActivity {
 
                     inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
+
 
 
 

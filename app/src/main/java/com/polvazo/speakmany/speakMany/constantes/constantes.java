@@ -14,8 +14,8 @@ public class constantes {
 
     //ESTADOS DE CONEXION USUARIO
     //si es 0 esta conectado, si es 1 se desconecto
-    public static final String ESTADO="estadoUsuario";
-    public static final String ESTADO_CONEXION="conectado";
+    public static final String ESTADO="activo";
+
 
 
 

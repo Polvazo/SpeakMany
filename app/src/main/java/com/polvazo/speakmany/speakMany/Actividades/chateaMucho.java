@@ -184,6 +184,7 @@ public class chateaMucho extends AppCompatActivity {
         Log.e("sla", preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this));
         metText.setEnabled(true);
 
+        mFirebaseRef.push().setValue(constantes.ESTADO);
 
         mbtSent.setOnClickListener(new View.OnClickListener() {
             @Override

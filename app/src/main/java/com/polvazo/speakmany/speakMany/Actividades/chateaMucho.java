@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -59,6 +61,8 @@ public class chateaMucho extends AppCompatActivity {
     ProgressDialog progressDialog;
     public int estado=0;
     private AlertDialog dialog1;
+    private boolean mSnackbarShown;
+    private Snackbar mSnackbar;
 
     @SuppressLint("HardwareIds")
     @Override
@@ -69,6 +73,7 @@ public class chateaMucho extends AppCompatActivity {
         mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         preferencia.Guardar(constantes.IDUSUARIO_CONECTADO, mId, getApplicationContext());
         gestionarUser.crearUsuarioConectado(getApplicationContext());
+        mSnackbar = Snackbar.make(findViewById(R.id.chat), "El usuario se desconecto", Snackbar.LENGTH_INDEFINITE);
         BuscarChat();
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(chateaMucho.this);
@@ -115,6 +120,7 @@ public class chateaMucho extends AppCompatActivity {
                             public void cuandoHayInternet() {
                                 // abrimos la nueva ventana.. este es el ELSE de tu if
                                 dialog.dismiss();
+                                estado=0;
                                 gestionarSalaChat chat = new gestionarSalaChat(chateaMucho.this);
                                 chat.buscarNumerodeChat(chateaMucho.this);
                             }
@@ -221,19 +227,23 @@ public class chateaMucho extends AppCompatActivity {
 
                 if (estado == 1) {
                     Log.e("estado", String.valueOf(estado));
-                    Toast toast = Toast.makeText(chateaMucho.this, "Salió de la sala", Toast.LENGTH_SHORT);
-                    toast.show();
+                    //Toast toast = Toast.makeText(chateaMucho.this, "Salió de la sala", Toast.LENGTH_SHORT);
+                    //toast.show();
                     Log.e("estado", String.valueOf(estado));
                     estado = 1;
                 } else {
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.chat), "El usuario se desconecto", Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setAction("close", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
 
+                    mSnackbar.setCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar snackbar, int event) {
+                            super.onDismissed(snackbar, event);
+                            mSnackbarShown = false;
+                            mSnackbar = null;
                         }
                     });
-                    snackbar.show();
+
+                    mSnackbar.show();
+                    mSnackbarShown = true;
                     Log.e("estado", String.valueOf(estado));
                     //Toast.makeText(chateaMucho.this, "El usuario se desconecto, busque otro usuario", Toast.LENGTH_SHORT).show();
                     metText.setEnabled(false);
@@ -316,7 +326,24 @@ public class chateaMucho extends AppCompatActivity {
             deleteChat.eliminarDisponibilidadSala(mdatabase1, Sala);
         } else {
         }
+  }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if (mSnackbarShown) {
 
+                Rect sRect = new Rect();
+                mSnackbar.getView().getHitRect(sRect);
+
+                //This way the snackbar will only be dismissed if
+                //the user clicks outside it.
+                if (!sRect.contains((int)ev.getX(), (int)ev.getY())) {
+                    mSnackbar.dismiss();
+                }
+            }
+        }
+
+        return super.dispatchTouchEvent(ev);
     }
 }

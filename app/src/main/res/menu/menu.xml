@@ -6,6 +6,6 @@
         android:icon="@mipmap/iconconexion"
         android:title="Buscar nuevo Chat"
         android:orderInCategory="1"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 
 </menu>

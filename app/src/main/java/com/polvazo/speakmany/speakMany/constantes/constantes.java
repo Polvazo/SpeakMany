@@ -12,6 +12,13 @@ public class constantes {
     public static final String IDCHAT="idChat";
 
 
+    //ESTADOS DE CONEXION USUARIO
+    //si es 0 esta conectado, si es 1 se desconecto
+    public static final String ESTADO="estadoUsuario";
+    public static final String ESTADO_CONEXION="conectado";
+
+
+
     //GUARDAR NUMERO DE SALA
     public static final String ID_NUMERO_SALA = "idNumeroDeSala";
 

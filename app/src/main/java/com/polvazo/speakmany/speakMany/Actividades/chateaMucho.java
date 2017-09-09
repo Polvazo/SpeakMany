@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Scroller;
@@ -33,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.polvazo.speakmany.R;
 import com.polvazo.speakmany.speakMany.Modelos.mensaje;
 import com.polvazo.speakmany.speakMany.Service.VerificarInternet;
+import com.polvazo.speakmany.speakMany.Util.ConnectionUtils;
 import com.polvazo.speakmany.speakMany.Util.deleteChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarSalaChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarUser;
@@ -57,6 +59,11 @@ public class chateaMucho extends AppCompatActivity {
     private String mId;
     FirebaseDatabase database;
     ProgressDialog progressDialog;
+    private AlertDialog dialog1;
+    private AlertDialog dialog;
+
+
+
 
     @SuppressLint("HardwareIds")
     @Override
@@ -70,6 +77,23 @@ public class chateaMucho extends AppCompatActivity {
         gestionarUser.crearUsuarioConectado(getApplicationContext());
         BuscarChat();
 
+        final AlertDialog.Builder builder = new AlertDialog.Builder(chateaMucho.this);
+        builder.setTitle("Nuevo Chat");
+        builder.setMessage("¿Desea buscar nuevo mensaje?");
+        builder.setPositiveButton("BUSCAR", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                EliminarSala();
+                BuscarChat();
+            } });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+            } });
+        dialog1 = builder.create();
+
     }
 
     public void BuscarChat(){
@@ -79,7 +103,7 @@ public class chateaMucho extends AppCompatActivity {
         final Button aceptar =  (Button)mView.findViewById(R.id.btn_chat);
         final Button salir =  (Button)mView.findViewById(R.id.btn_chat_cancelar);
         mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
+        dialog = mBuilder.create();
         dialog.setCancelable(false);
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,21 +131,7 @@ public class chateaMucho extends AppCompatActivity {
                         });
                 tarea.execute();
 
-                /*if(!comprobarInternet.isOnline(chateaMucho.this)){
-                    Toast.makeText(getBaseContext(),"Comprueba tu conexión a Internet", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                    BuscarChat();
-                }
-                else{
-
-                    dialog.dismiss();
-                    gestionarSalaChat chat = new gestionarSalaChat(chateaMucho.this);
-                    chat.buscarNumerodeChat(chateaMucho.this);
-                }*/
-
-
-
-            }
+                       }
         });
         salir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +207,7 @@ public class chateaMucho extends AppCompatActivity {
                     try {
 
                         mensaje model = dataSnapshot.getValue(mensaje.class);
-
+                        model.getmTexto();
                         mChats.add(model);
                         mRecyclerView.scrollToPosition(mChats.size() - 1);
                         mAdapter.notifyItemInserted(mChats.size() - 1);
@@ -215,13 +225,17 @@ public class chateaMucho extends AppCompatActivity {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                if(!mId.equals(preferencia.obtener(constantes.IDUSUARIO_CONECTADO,getApplicationContext()))){
+                if(!dialog.isShowing()){
+
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.chat),"El usuario se desconecto", Snackbar.LENGTH_SHORT);
                     snackbar.show();
                     //Toast.makeText(chateaMucho.this, "El usuario se desconecto, busque otro usuario", Toast.LENGTH_SHORT).show();
                     metText.setEnabled(false);
-                    metText.setHint("Escribir un mensaje");}
-                //en caso de salir de una conversacion, enviar un mensaje
+                    metText.setHint("Usuario Desconectado");
+                }
+
+
+                    //en caso de salir de una conversacion, enviar un mensaje
 
             }
 
@@ -249,23 +263,16 @@ public class chateaMucho extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.buscar_otra_vez:
 
+                View v = getCurrentFocus();
+                if(v!=null){
+                    InputMethodManager inputMethodManager =  (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(chateaMucho.this);
-                builder.setTitle("Nuevo Chat");
-                builder.setMessage("¿Desea buscar nuevo mensaje?");
-                builder.setPositiveButton("BUSCAR", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        EliminarSala();
-                        BuscarChat();
-                    } });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
 
-                        dialog.dismiss();
 
-                    } });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+
+                dialog1.show();
 
 
             default:

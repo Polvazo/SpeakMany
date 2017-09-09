@@ -26,7 +26,7 @@ public class gestionarUser {
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mUsuario = mDatabase.child(constantes.USUARIOS_CONECTADOS);
+        mUsuario = mDatabase.child(constantes.USUARIOS_CONECTADOS).child(constantes.USUARIOS);
         Map<String, user> usuarios = new HashMap<String, user>();
         String obtenerusuario = preferencia.obtener(constantes.IDUSUARIO_CONECTADO,c);
         usuarios.put( obtenerusuario, new user(obtenerusuario));
@@ -37,18 +37,6 @@ public class gestionarUser {
         //String key = reference.getKey();
         //reference.setValue(key);
         //preferencia.Guardar(constantes.IDUSUARIO_CONECTADO, key, c);
-
-    }
-
-    public static void crearUsuarioChateando(Context context){
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("usuariosConectados").child(preferencia.obtener(constantes.IDUSUARIO_CONECTADO, context)).removeValue();
-        DatabaseReference chateando =     mDatabase.child("UsuariosChateando").push();
-        String keyChateando = chateando.getKey();
-        chateando.setValue(keyChateando);
-        preferencia.Guardar(constantes.IDUSUARIO_CHATEANDO, keyChateando, context);
-
 
     }
 }

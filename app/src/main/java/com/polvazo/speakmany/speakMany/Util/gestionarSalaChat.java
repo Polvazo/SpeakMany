@@ -144,6 +144,7 @@ public  class gestionarSalaChat {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+                Toast.makeText(context, "No hay internet", Toast.LENGTH_SHORT).show();
             }
         });
 

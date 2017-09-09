@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 
@@ -97,7 +98,8 @@ public  class gestionarSalaChat {
 
                             progressDialog.dismiss();
 
-                            Toast.makeText(context, "No se encontró usuario y se creo una nueva sala", Toast.LENGTH_SHORT).show();
+                            Toast toast = Toast.makeText(context, "No se encontró usuario y se creo una nueva sala", Toast.LENGTH_SHORT);
+                            toast.show();
 
                             EsperarsUsuario(numerodeSala, context, keySalita,numerodeSala);
                             chateaMucho.nextChat();

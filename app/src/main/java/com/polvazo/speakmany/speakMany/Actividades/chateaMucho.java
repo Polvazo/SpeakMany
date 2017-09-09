@@ -1,8 +1,6 @@
 package com.polvazo.speakmany.speakMany.Actividades;
 
 
-
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
@@ -17,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +33,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.polvazo.speakmany.R;
 import com.polvazo.speakmany.speakMany.Modelos.mensaje;
 import com.polvazo.speakmany.speakMany.Service.VerificarInternet;
-import com.polvazo.speakmany.speakMany.Util.ConnectionUtils;
 import com.polvazo.speakmany.speakMany.Util.deleteChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarSalaChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarUser;
@@ -59,7 +57,7 @@ public class chateaMucho extends AppCompatActivity {
     private String mId;
     FirebaseDatabase database;
     ProgressDialog progressDialog;
-    private int estado;
+    public int estado=0;
     private AlertDialog dialog1;
 
     @SuppressLint("HardwareIds")
@@ -68,9 +66,8 @@ public class chateaMucho extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatea_mucho);
 
-
         mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        preferencia.Guardar(constantes.IDUSUARIO_CONECTADO,mId,getApplicationContext());
+        preferencia.Guardar(constantes.IDUSUARIO_CONECTADO, mId, getApplicationContext());
         gestionarUser.crearUsuarioConectado(getApplicationContext());
         BuscarChat();
 
@@ -79,31 +76,35 @@ public class chateaMucho extends AppCompatActivity {
         builder.setMessage("¿Desea buscar nuevo mensaje?");
         builder.setPositiveButton("BUSCAR", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                estado=1;
+
+                estado = 1;
                 Log.e("estado", String.valueOf(estado));
                 EliminarSala();
                 BuscarChat();
-            } });
+            }
+        });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
                 dialog.dismiss();
 
-            } });
+            }
+        });
         dialog1 = builder.create();
 
     }
 
-    public void BuscarChat(){
+
+    public void BuscarChat() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(chateaMucho.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_buscar_chat, null);
 
-        final Button aceptar =  (Button)mView.findViewById(R.id.btn_chat);
-        final Button salir =  (Button)mView.findViewById(R.id.btn_chat_cancelar);
+        final Button aceptar = (Button) mView.findViewById(R.id.btn_chat);
+        final Button salir = (Button) mView.findViewById(R.id.btn_chat_cancelar);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations =R.style.DialogAnimation_2;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,14 +121,14 @@ public class chateaMucho extends AppCompatActivity {
 
                             @Override
                             public void cuandoNOHayInternet() {
-                                Toast.makeText(getBaseContext(),"Lo sentimos, compruebe su conexión a Internet", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getBaseContext(), "Lo sentimos, compruebe su conexión a Internet", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                                 BuscarChat();
                             }
                         });
                 tarea.execute();
 
-                       }
+            }
         });
         salir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +140,6 @@ public class chateaMucho extends AppCompatActivity {
         dialog.cancel();
         dialog.show();
     }
-
 
 
     @Override
@@ -156,14 +156,12 @@ public class chateaMucho extends AppCompatActivity {
                 }).create().show();
     }
 
-    public void nextChat(){
+    public void nextChat() {
 
         metText = (EditText) findViewById(R.id.message);
         mbtSent = (Button) findViewById(R.id.btn_send);
         mRecyclerView = (RecyclerView) findViewById(R.id.rvChat);
         mChats = new ArrayList<>();
-
-
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setStackFromEnd(true);
@@ -177,9 +175,8 @@ public class chateaMucho extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this)).child("mensajes");
-        Log.e("sla",preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this));
+        Log.e("sla", preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this));
         metText.setEnabled(true);
-
 
 
         mbtSent.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +184,7 @@ public class chateaMucho extends AppCompatActivity {
             public void onClick(View v) {
                 String message = metText.getText().toString().trim();
 
-                if (message.length()!=0) {
+                if (message.length() != 0) {
 
                     mFirebaseRef.push().setValue(new mensaje(message, mId));
                 }
@@ -221,18 +218,31 @@ public class chateaMucho extends AppCompatActivity {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                if(estado!=1){
 
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.chat),"El usuario se desconecto", Snackbar.LENGTH_SHORT);
+                if (estado == 1) {
+                    Log.e("estado", String.valueOf(estado));
+                    Toast toast = Toast.makeText(chateaMucho.this, "Salió de la sala", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.e("estado", String.valueOf(estado));
+                    estado = 1;
+                } else {
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.chat), "El usuario se desconecto", Snackbar.LENGTH_INDEFINITE);
+                    snackbar.setAction("close", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
                     snackbar.show();
+                    Log.e("estado", String.valueOf(estado));
                     //Toast.makeText(chateaMucho.this, "El usuario se desconecto, busque otro usuario", Toast.LENGTH_SHORT).show();
                     metText.setEnabled(false);
                     metText.setHint("Usuario Desconectado");
-                }
-                    estado=0;
-                Log.e("estado", String.valueOf(estado));
 
-                    //en caso de salir de una conversacion, enviar un mensaje
+                }
+
+
+                //en caso de salir de una conversacion, enviar un mensaje
 
             }
 
@@ -248,6 +258,7 @@ public class chateaMucho extends AppCompatActivity {
         });
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -257,12 +268,12 @@ public class chateaMucho extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.buscar_otra_vez:
 
                 View v = getCurrentFocus();
-                if(v!=null){
-                    InputMethodManager inputMethodManager =  (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (v != null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
                     inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
@@ -276,11 +287,12 @@ public class chateaMucho extends AppCompatActivity {
         }
 
     }
-    public void EliminarSala(){
+
+    public void EliminarSala() {
         DatabaseReference mdatabase;
-        mdatabase=FirebaseDatabase.getInstance().getReference();
-        String Sala = preferencia.obtener(constantes.ID_NUMERO_SALA,chateaMucho.this);
-        deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase,Sala);
+        mdatabase = FirebaseDatabase.getInstance().getReference();
+        String Sala = preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this);
+        deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase, Sala);
     }
 
     @Override
@@ -292,16 +304,18 @@ public class chateaMucho extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         DatabaseReference mdatabase1;
-        mdatabase1=FirebaseDatabase.getInstance().getReference();
-        String sala1=preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this);
-        String Sala = preferencia.obtener(constantes.ID_KEY_NUMERO_SALA,chateaMucho.this);
+        mdatabase1 = FirebaseDatabase.getInstance().getReference();
+        String sala1 = preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this);
+        String Sala = preferencia.obtener(constantes.ID_KEY_NUMERO_SALA, chateaMucho.this);
 
-        if (sala1!=null){
-            deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase1,sala1);
-        }else{}
-        if (Sala!=null){
-            deleteChat.eliminarDisponibilidadSala(mdatabase1,Sala);
-        }else{}
+        if (sala1 != null) {
+            deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase1, sala1);
+        } else {
+        }
+        if (Sala != null) {
+            deleteChat.eliminarDisponibilidadSala(mdatabase1, Sala);
+        } else {
+        }
 
 
     }

@@ -103,12 +103,10 @@ public class chateaMucho extends AppCompatActivity {
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.setCancelable(false);
+        dialog.getWindow().getAttributes().windowAnimations =R.style.DialogAnimation_2;
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
 
                 VerificarInternet tarea =
                         new VerificarInternet(chateaMucho.this, new VerificarInternet.EntoncesHacer() {
@@ -268,9 +266,6 @@ public class chateaMucho extends AppCompatActivity {
 
                     inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
-
-
-
 
                 dialog1.show();
 

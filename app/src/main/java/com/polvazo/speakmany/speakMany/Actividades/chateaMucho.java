@@ -59,7 +59,7 @@ public class chateaMucho extends AppCompatActivity {
     private String mId;
     FirebaseDatabase database;
     ProgressDialog progressDialog;
-    public int estado=0;
+    public int estado = 0;
     private AlertDialog dialog1;
     private boolean mSnackbarShown;
     private Snackbar mSnackbar;
@@ -120,7 +120,7 @@ public class chateaMucho extends AppCompatActivity {
                             public void cuandoHayInternet() {
                                 // abrimos la nueva ventana.. este es el ELSE de tu if
                                 dialog.dismiss();
-                                estado=0;
+                                estado = 0;
                                 gestionarSalaChat chat = new gestionarSalaChat(chateaMucho.this);
                                 chat.buscarNumerodeChat(chateaMucho.this);
                             }
@@ -326,7 +326,7 @@ public class chateaMucho extends AppCompatActivity {
             deleteChat.eliminarDisponibilidadSala(mdatabase1, Sala);
         } else {
         }
-  }
+    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -338,7 +338,7 @@ public class chateaMucho extends AppCompatActivity {
 
                 //This way the snackbar will only be dismissed if
                 //the user clicks outside it.
-                if (!sRect.contains((int)ev.getX(), (int)ev.getY())) {
+                if (!sRect.contains((int) ev.getX(), (int) ev.getY())) {
                     mSnackbar.dismiss();
                 }
             }

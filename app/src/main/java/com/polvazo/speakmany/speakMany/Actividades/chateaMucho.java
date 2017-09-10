@@ -73,7 +73,6 @@ public class chateaMucho extends AppCompatActivity {
         mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         preferencia.Guardar(constantes.IDUSUARIO_CONECTADO, mId, getApplicationContext());
         gestionarUser.crearUsuarioConectado(getApplicationContext());
-        mSnackbar = Snackbar.make(findViewById(R.id.chat), R.string.a_cha_snackbar_userDisconect, Snackbar.LENGTH_INDEFINITE);
         BuscarChat();
 
     }
@@ -82,7 +81,7 @@ public class chateaMucho extends AppCompatActivity {
     public void BuscarChat() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(chateaMucho.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_buscar_chat, null);
-
+        estado=1;
         final Button aceptar = (Button) mView.findViewById(R.id.btn_chat);
         final Button salir = (Button) mView.findViewById(R.id.btn_chat_cancelar);
         mBuilder.setView(mView);
@@ -211,7 +210,7 @@ public class chateaMucho extends AppCompatActivity {
                     Log.e("estado", String.valueOf(estado));
                     estado = 1;
                 } else {
-
+                    mSnackbar = Snackbar.make(findViewById(R.id.chat), R.string.a_cha_snackbar_userDisconect, Snackbar.LENGTH_INDEFINITE);
                     mSnackbar.setCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar snackbar, int event) {
@@ -219,8 +218,8 @@ public class chateaMucho extends AppCompatActivity {
                             mSnackbarShown = false;
                             mSnackbar = null;
                         }
-                    });
 
+                    });
                     mSnackbar.show();
                     mSnackbarShown = true;
                     Log.e("estado", String.valueOf(estado));

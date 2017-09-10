@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.polvazo.speakmany.R;
 import com.polvazo.speakmany.speakMany.Actividades.chateaMucho;
 import com.polvazo.speakmany.speakMany.constantes.constantes;
 import java.util.ArrayList;
@@ -53,10 +54,10 @@ public  class gestionarSalaChat {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         numeroDeSala = mDatabase.child(constantes.SALA_CHAT_DISPONIBLE);
 
-        progressDialog.setTitle("Buscando Sala");
-        progressDialog.setMessage("Buscando usuario para chatear");
+        progressDialog.setTitle(R.string.u_ges_dialogoBuscandoUsuario_title);
+        progressDialog.setMessage(context.getString(R.string.u_ges_dialogoBuscandoUsuario_message));
         progressDialog.setCancelable(false);
-        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.u_ges_dialogoBuscandoUsuario_buttonCANCELAR), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 progressDialog.dismiss();
@@ -98,7 +99,7 @@ public  class gestionarSalaChat {
 
                             progressDialog.dismiss();
 
-                            Toast toast = Toast.makeText(context, "No se encontró usuario y se creo una nueva sala", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(context, R.string.u_ges_toast_NoEncontroUsuario, Toast.LENGTH_SHORT);
                             toast.show();
 
                             EsperarsUsuario(numerodeSala, context, keySalita,numerodeSala);
@@ -133,7 +134,7 @@ public  class gestionarSalaChat {
 
                         mDatabase.child(constantes.SALA_CHAT_OCUPADO).child(Salita).child(constantes.USUARIOS).push().setValue(id);
 
-                        Toast.makeText(context, "Se encontró un usuario conectado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.u_ges_toast_EncontroUsuario,Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                         chateaMucho.nextChat();
                     }
@@ -146,7 +147,6 @@ public  class gestionarSalaChat {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-                Toast.makeText(context, "No hay internet", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -158,10 +158,10 @@ public  class gestionarSalaChat {
         esperandoCHat = mDatabase.child(constantes.SALA_CHAT_OCUPADO).child(room).child(constantes.USUARIOS);
         final ProgressDialog progressDialog2;
         progressDialog2 = new ProgressDialog(casa);
-        progressDialog2.setTitle("Esperando Usuario");
-        progressDialog2.setMessage("Esperando un usuario que se conecte a la sala... :)");
+        progressDialog2.setTitle(R.string.u_ges_dialogoEsperarUsuario_title);
+        progressDialog2.setMessage(casa.getString(R.string.u_ges_dialogoEsperarUsuario_message));
         progressDialog2.setCancelable(false);
-        progressDialog2.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
+        progressDialog2.setButton(DialogInterface.BUTTON_NEGATIVE,casa.getString(R.string.u_ges_dialogoEsperarUsuario_buttonCANCELAR), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -182,12 +182,11 @@ public  class gestionarSalaChat {
                     String user = (String) ds.getValue();
                     Usuarios.add(user);
                     Log.e("usuario", user);
-                    if (Usuarios.size() == 2) {
+                    if (Usuarios.size()==2 && evenet != null) {
                         progressDialog2.dismiss();
-                        if (evenet != null) {
-                            esperandoCHat.removeEventListener(evenet);
-                        }
-                        Toast.makeText(casa, "Se encontro usuario, puede comenzar a chatear", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(casa, R.string.u_ges_toast_EncontroUsuario, Toast.LENGTH_SHORT).show();
+                        esperandoCHat.removeEventListener(evenet);
+
                     }
                 }
             }

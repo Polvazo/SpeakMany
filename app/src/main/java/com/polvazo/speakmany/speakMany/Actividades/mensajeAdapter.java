@@ -5,17 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.polvazo.speakmany.R;
 import com.polvazo.speakmany.speakMany.Modelos.mensaje;
-import com.polvazo.speakmany.speakMany.constantes.constantes;
+
 import java.util.List;
 
-
 class mensajeAdapter extends RecyclerView.Adapter<mensajeAdapter.ViewHolder> {
-
+    private static final int CHAT_END = 1;
+    private static final int CHAT_START = 2;
 
     private List<mensaje> mDataSet;
     private String mId;
+
 
     mensajeAdapter(List<mensaje> dataSet, String id) {
         mDataSet = dataSet;
@@ -26,7 +28,7 @@ class mensajeAdapter extends RecyclerView.Adapter<mensajeAdapter.ViewHolder> {
     public mensajeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
 
-        if (viewType == constantes.CHAT_END) {
+        if (viewType == CHAT_END) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_recibido, parent, false);
         } else {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_inicio, parent, false);
@@ -38,10 +40,10 @@ class mensajeAdapter extends RecyclerView.Adapter<mensajeAdapter.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
         if (mDataSet.get(position).getmUsuario().equals(mId)) {
-            return constantes.CHAT_END;
+            return CHAT_END;
         }
 
-        return constantes.CHAT_START;
+        return CHAT_START;
     }
 
     @Override

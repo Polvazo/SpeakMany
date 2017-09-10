@@ -19,7 +19,7 @@
         android:id="@+id/txt_1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="@string/ChateaMucho"
+        android:text="@string/a_dia_TextView_ChateaMucho"
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="@color/primary_dark"
@@ -30,7 +30,7 @@
         android:id="@+id/txt_2"
         android:layout_width="match_parent"
         android:layout_height="53dp"
-        android:text="@string/ChateMucho_Sub"
+        android:text="@string/a_dia_TextView_BuscarCHat"
         android:gravity="center"
         android:textColor="@color/secondary_text"
         android:layout_marginLeft="70dp"
@@ -50,7 +50,7 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/color_boton"
-            android:text="@string/buscaChat"
+            android:text="@string/a_dia_Button_buscar"
             android:textAllCaps="false"
             android:textColor="@color/primary" />
 
@@ -62,7 +62,7 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/color_boton"
-            android:text="@string/cancelar"
+            android:text="@string/a_dia_Button_salir"
             android:textAllCaps="false"
             android:textColor="@color/primary"/>
     </LinearLayout>

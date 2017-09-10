@@ -58,11 +58,11 @@ public class chateaMucho extends AppCompatActivity {
     private mensajeAdapter mAdapter;
     private String mId;
     FirebaseDatabase database;
-    ProgressDialog progressDialog;
     public int estado = 0;
     private AlertDialog dialog1;
     private boolean mSnackbarShown;
     private Snackbar mSnackbar;
+    private ChildEventListener evento;
 
     @SuppressLint("HardwareIds")
     @Override
@@ -73,29 +73,8 @@ public class chateaMucho extends AppCompatActivity {
         mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         preferencia.Guardar(constantes.IDUSUARIO_CONECTADO, mId, getApplicationContext());
         gestionarUser.crearUsuarioConectado(getApplicationContext());
-        mSnackbar = Snackbar.make(findViewById(R.id.chat), "El usuario se desconecto", Snackbar.LENGTH_INDEFINITE);
+        mSnackbar = Snackbar.make(findViewById(R.id.chat), R.string.a_cha_snackbar_userDisconect, Snackbar.LENGTH_INDEFINITE);
         BuscarChat();
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(chateaMucho.this);
-        builder.setTitle("Nuevo Chat");
-        builder.setMessage("¿Desea buscar nuevo mensaje?");
-        builder.setPositiveButton("BUSCAR", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-                estado = 1;
-                Log.e("estado", String.valueOf(estado));
-                EliminarSala();
-                BuscarChat();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.dismiss();
-
-            }
-        });
-        dialog1 = builder.create();
 
     }
 
@@ -127,7 +106,7 @@ public class chateaMucho extends AppCompatActivity {
 
                             @Override
                             public void cuandoNOHayInternet() {
-                                Toast.makeText(getBaseContext(), "Lo sentimos, compruebe su conexión a Internet", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getBaseContext(), R.string.a_cha_toast_internet, Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                                 BuscarChat();
                             }
@@ -151,8 +130,8 @@ public class chateaMucho extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
-                .setTitle("CHATEAMUCHO")
-                .setMessage("¿Está seguro que desea salir?")
+                .setTitle(R.string.a_cha_dialogoSalir_title)
+                .setMessage(R.string.a_cha_dialogoSalir_message)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -179,10 +158,9 @@ public class chateaMucho extends AppCompatActivity {
 
         mRecyclerView.setAdapter(mAdapter);
         database = FirebaseDatabase.getInstance();
-
-        mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this)).child("mensajes");
         Log.e("sla", preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this));
         metText.setEnabled(true);
+            mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this)).child("mensajes");
 
         mFirebaseRef.push().setValue(constantes.ESTADO);
 
@@ -200,7 +178,7 @@ public class chateaMucho extends AppCompatActivity {
         });
 
 
-        mFirebaseRef.addChildEventListener(new ChildEventListener() {
+       evento = mFirebaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot != null && dataSnapshot.getValue() != null) {
@@ -248,12 +226,9 @@ public class chateaMucho extends AppCompatActivity {
                     Log.e("estado", String.valueOf(estado));
                     //Toast.makeText(chateaMucho.this, "El usuario se desconecto, busque otro usuario", Toast.LENGTH_SHORT).show();
                     metText.setEnabled(false);
-                    metText.setHint("Usuario Desconectado");
+                    metText.setHint(R.string.a_cha_editText_hint);
 
                 }
-
-
-                //en caso de salir de una conversacion, enviar un mensaje
 
             }
 
@@ -282,6 +257,30 @@ public class chateaMucho extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.buscar_otra_vez:
 
+                final AlertDialog.Builder builder = new AlertDialog.Builder(chateaMucho.this);
+                builder.setTitle(R.string.a_cha_dialogoBuscar_title);
+                builder.setMessage(R.string.a_cha_dialogoBuscar_message);
+                builder.setPositiveButton(R.string.a_cha_dialogoBuscar_buttomOK, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        estado = 1;
+                        Log.e("estado", String.valueOf(estado));
+                        EliminarSala();
+                        BuscarChat();
+                        mFirebaseRef.removeEventListener(evento);
+
+                    }
+                });
+                builder.setNegativeButton(R.string.a_cha_dialogoBuscar_buttomCancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                });
+
+                dialog1 = builder.create();
                 View v = getCurrentFocus();
                 if (v != null) {
                     InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -307,26 +306,20 @@ public class chateaMucho extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+
         DatabaseReference mdatabase1;
         mdatabase1 = FirebaseDatabase.getInstance().getReference();
-        String sala1 = preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this);
         String Sala = preferencia.obtener(constantes.ID_KEY_NUMERO_SALA, chateaMucho.this);
+        EliminarSala();
 
-        if (sala1 != null) {
-            deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase1, sala1);
-        } else {
-        }
         if (Sala != null) {
             deleteChat.eliminarDisponibilidadSala(mdatabase1, Sala);
         } else {
         }
+
+
     }
 
     @Override

@@ -47,9 +47,9 @@ public class VerificarInternet extends AsyncTask<Void, Void, Boolean> {
     protected void onPreExecute() {
         // preparamos el cuadro de dialogo
         dialog = new ProgressDialog(context);
-        dialog.setMessage("Conectándose al servidor para buscar usuario");
+        dialog.setMessage(context.getString(R.string.s_ver_dialogoInternt_message));
         dialog.setCancelable(false);
-        dialog.setTitle("Conectando...");
+        dialog.setTitle(R.string.s_ver_dialogoInternt_tittle);
         dialog.setIcon(R.mipmap.iconconexion);
         dialog.show();
 

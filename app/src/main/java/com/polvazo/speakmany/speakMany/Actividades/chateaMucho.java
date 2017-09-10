@@ -306,18 +306,16 @@ public class chateaMucho extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-
+        Log.e("estado","escriir");
         DatabaseReference mdatabase1;
+        EliminarSala();
         mdatabase1 = FirebaseDatabase.getInstance().getReference();
         String Sala = preferencia.obtener(constantes.ID_KEY_NUMERO_SALA, chateaMucho.this);
         EliminarSala();
-
         if (Sala != null) {
             deleteChat.eliminarDisponibilidadSala(mdatabase1, Sala);
-        } else {
         }
-
+        super.onDestroy();
 
     }
 

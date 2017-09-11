@@ -4,9 +4,13 @@ package com.polvazo.speakmany.speakMany.Actividades;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Rect;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.polvazo.speakmany.R;
 import com.polvazo.speakmany.speakMany.Modelos.mensaje;
+import com.polvazo.speakmany.speakMany.Service.MyService;
 import com.polvazo.speakmany.speakMany.Service.VerificarInternet;
 import com.polvazo.speakmany.speakMany.Util.deleteChat;
 import com.polvazo.speakmany.speakMany.Util.gestionarSalaChat;
@@ -48,7 +54,8 @@ import java.util.List;
 
 public class chateaMucho extends AppCompatActivity {
 
-    private static final String TAG = chateaMucho.class.getName();
+    //private static final String TAG = chateaMucho.class.getName();
+    private static final String TAG = chateaMucho.class.getSimpleName();
 
     private EditText metText;
     private Button mbtSent;
@@ -63,6 +70,9 @@ public class chateaMucho extends AppCompatActivity {
     private boolean mSnackbarShown;
     private Snackbar mSnackbar;
     private ChildEventListener evento;
+    DatabaseReference mdatabase1;
+    MyService myService;
+    ServiceConnection connection;
 
     @SuppressLint("HardwareIds")
     @Override
@@ -70,6 +80,23 @@ public class chateaMucho extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatea_mucho);
 
+        Intent serviceIntent = new Intent(chateaMucho.this, MyService.class);
+        startService(serviceIntent);
+
+        connection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                myService = ((MyService.MyBinder) service).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                myService = null;
+            }
+        };
+
+        Log.e("inicia sefvicio", "npse");
+        mdatabase1 = FirebaseDatabase.getInstance().getReference();
         mId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         preferencia.Guardar(constantes.IDUSUARIO_CONECTADO, mId, getApplicationContext());
         gestionarUser.crearUsuarioConectado(getApplicationContext());
@@ -77,11 +104,19 @@ public class chateaMucho extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (connection != null) {
+            Intent intent = new Intent(chateaMucho.this, MyService.class);
+            bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        }
+    }
 
     public void BuscarChat() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(chateaMucho.this);
         View mView = getLayoutInflater().inflate(R.layout.dialogo_buscar_chat, null);
-        estado=1;
+        estado = 1;
         final Button aceptar = (Button) mView.findViewById(R.id.btn_chat);
         final Button salir = (Button) mView.findViewById(R.id.btn_chat_cancelar);
         mBuilder.setView(mView);
@@ -159,7 +194,8 @@ public class chateaMucho extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         Log.e("sla", preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this));
         metText.setEnabled(true);
-            mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this)).child("mensajes");
+        metText.setHint(R.string.a_chat_editTex_hint_principal);
+        mFirebaseRef = database.getReference().child(constantes.SALA_CHAT_OCUPADO).child(preferencia.obtener(constantes.ID_NUMERO_SALA, chateaMucho.this)).child("mensajes");
 
         mFirebaseRef.push().setValue(constantes.ESTADO);
 
@@ -177,7 +213,7 @@ public class chateaMucho extends AppCompatActivity {
         });
 
 
-       evento = mFirebaseRef.addChildEventListener(new ChildEventListener() {
+        evento = mFirebaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot != null && dataSnapshot.getValue() != null) {
@@ -211,15 +247,16 @@ public class chateaMucho extends AppCompatActivity {
                     estado = 1;
                 } else {
                     mSnackbar = Snackbar.make(findViewById(R.id.chat), R.string.a_cha_snackbar_userDisconect, Snackbar.LENGTH_INDEFINITE);
-                    mSnackbar.setCallback(new Snackbar.Callback() {
+                    /*mSnackbar.addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar snackbar, int event) {
                             super.onDismissed(snackbar, event);
-                            mSnackbarShown = false;
+                                mSnackbarShown = false;
                             mSnackbar = null;
                         }
 
-                    });
+                    });*/
+
                     mSnackbar.show();
                     mSnackbarShown = true;
                     Log.e("estado", String.valueOf(estado));
@@ -304,35 +341,53 @@ public class chateaMucho extends AppCompatActivity {
         deleteChat.eliminarDisponibilidadSalaOcupada(mdatabase, Sala);
     }
 
+    /*
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(myService!=null){
+            if(connection!=null){
+                unbindService(connection);
+                myService=null;
+            }
+        }
+    }*/
+
     @Override
     protected void onDestroy() {
-        Log.e("estado","escriir");
-        DatabaseReference mdatabase1;
-        EliminarSala();
-        mdatabase1 = FirebaseDatabase.getInstance().getReference();
-        String Sala = preferencia.obtener(constantes.ID_KEY_NUMERO_SALA, chateaMucho.this);
-        EliminarSala();
-        if (Sala != null) {
-            deleteChat.eliminarDisponibilidadSala(mdatabase1, Sala);
-        }
-        super.onDestroy();
 
+        super.onDestroy();
+        if (myService != null) {
+            myService.terminar();
+        }
+        Log.i("estado", "destr9t");
+        //stopService(new Intent(chateaMucho.this,MyService.class));
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.i("estado", "entro");
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            if (mSnackbarShown) {
+            if (mSnackbar != null && mSnackbar.isShown()){
+                Log.i("estado", "entroaqui");
 
-                Rect sRect = new Rect();
-                mSnackbar.getView().getHitRect(sRect);
+                mSnackbar.dismiss();
 
-                //This way the snackbar will only be dismissed if
-                //the user clicks outside it.
-                if (!sRect.contains((int) ev.getX(), (int) ev.getY())) {
-                    mSnackbar.dismiss();
-                }
             }
+
+
+              /*  if (mSnackbarShown) {
+                    Log.i("estado", "entroaqui");
+                    Rect sRect = new Rect();
+                    mSnackbar.getView().getHitRect(sRect);
+
+                    //This way the snackbar will only be dismissed if
+                    //the user clicks outside it.
+                    if (!sRect.contains((int) ev.getX(), (int) ev.getY())) {
+                        mSnackbar.dismiss();
+                        Log.i("estado", "entroaquiDismiss");
+                    }
+                }*/
         }
 
         return super.dispatchTouchEvent(ev);

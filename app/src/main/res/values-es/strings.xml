@@ -1,0 +1,49 @@
+<resources>
+
+    //actividad ChateaMucho
+    <string name="a_cha_snackbar_userDisconect">El usuario se desconecto</string>
+    <string name="a_cha_toast_internet">Lo sentimos, compruebe su conexión a Internet</string>
+
+    <string name="a_cha_dialogoSalir_title">CHATEAMUCHO</string>
+    <string name="a_cha_dialogoSalir_message">¿Está seguro que desea salir?</string>
+    <string name="a_cha_editText_hint">Usuario Desconectado</string>
+
+    <string name="a_cha_dialogoBuscar_title">Nuevo Chat</string>
+    <string name="a_cha_dialogoBuscar_message">¿Desea buscar nuevo mensaje?</string>
+    <string name="a_cha_dialogoBuscar_buttomOK">BUSCAR</string>
+    <string name="a_cha_dialogoBuscar_buttomCancel">Cancel</string>
+
+    <string name="a_chat_editTex_hint_principal">Escribe un mensaje...</string>
+    <string name="a_chat_button_enviar">Enviar</string>
+
+    //SERVICE VERIFICAR INTERNET
+    <string name="s_ver_dialogoInternt_tittle">Conectando...</string>
+    <string name="s_ver_dialogoInternt_message">Conectándose al servidor para buscar usuario</string>
+
+    //UTIL GESTIONAR_SALA_CHAT
+    <string name="u_ges_dialogoBuscandoUsuario_title">Buscando Sala</string>
+    <string name="u_ges_dialogoBuscandoUsuario_message">Buscando usuario para chatear</string>
+    <string name="u_ges_dialogoBuscandoUsuario_buttonCANCELAR">Cancelar</string>
+
+    <string name="u_ges_toast_NoEncontroUsuario">No se encontró usuario y se creo una nueva sala</string>
+    <string name="u_ges_toast_EncontroUsuario">Se encontró un usuario conectado</string>
+    <string name="u_ges_toast_usuarioEncontrado">Usuario Encontrado, puede comenzar</string>
+
+    <string name="u_ges_dialogoEsperarUsuario_title">Esperando Usuario</string>
+    <string name="u_ges_dialogoEsperarUsuario_message">Esperando un usuario que se conecte a la sala... :)</string>
+    <string name="u_ges_dialogoEsperarUsuario_buttonCANCELAR">Cancelar</string>
+
+    //ACTIVIDAD DIALOGO BUSCAR CHAT
+    <string name="a_dia_TextView_ChateaMucho">ChateaMucho</string>
+    <string name="a_dia_TextView_BuscarCHat">Busca tu chat y comienza una nueva aventura con personas divertidas</string>
+    <string name="a_dia_Button_buscar">Buscar Chat</string>
+    <string name="a_dia_Button_salir">Salir</string>
+
+
+    //OTROS
+    <string name="app_name">ChateaMucho</string>
+    <string name="nombre">Chatea Mucho</string>
+    <string name="text_item">Message</string>
+    <string name="bienbenido">Bienvenido a ChateaMucho</string>
+
+</resources>
